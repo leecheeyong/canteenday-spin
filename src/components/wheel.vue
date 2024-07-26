@@ -3,20 +3,9 @@ import { ref, computed, onMounted } from 'vue'
 import FortuneWheel from 'vue-fortune-wheel'
 import 'vue-fortune-wheel/style.css'
 
-const data = await fetch('https://canteenday-2024.vercel.app/wheel').then(r=>r.json())
+const prizesCanvas = ref(await fetch('https://canteenday-2024.vercel.app/wheel').then(r=>r.json()))
 const prizeId = ref(0)
-const prizesCanvas = data.map((i) => {
-    return {
-        id: i["id"],
-        name: i["name"],
-        value: i["value"],
-        bgColor: i["bgColor"],
-        color: "#ffffff",
-        probability: i["probability"]
-    }
-})
 
-const wheelEl = ref()
 const canvasVerify = ref(false) // Whether the turntable in canvas mode is enabled for verification
 const verifyDuration = 2
 const canvasOptions = {
@@ -28,11 +17,6 @@ const canvasOptions = {
 
 const prizeRes = computed(() => {
   return prizesCanvas.find(item => item.id === prizeId.value) || prizesCanvas[0]
-})
-
-
-onMounted(() => {
-  wheelEl.value.startRotate() // Can start rotation
 })
 
 // Simulate the request back-end interface
